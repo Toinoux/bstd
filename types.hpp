@@ -12,7 +12,7 @@
 
 namespace bstd {
 	template<typename T, typename U>
-	bool isSameType() {
+	constexpr bool isSameType() {
 		return (std::type_index(typeid(T)) == std::type_index(typeid(U)));
 	}
 
