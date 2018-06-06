@@ -85,4 +85,22 @@ TEST_CASE("ThreadPool") {
 		}
 		REQUIRE(res == value);
 	}
+
+	SECTION("Non void future") {
+		std::vector<std::future<int>> actions;
+		int value = bstd::randomise<size_t>(1, 200);
+		for (size_t i = 0; i < value; ++i) {
+			actions.emplace_back(pool.addTask([&res] {
+				int foo;
+				foo = res;
+				++res;
+				return (foo);
+			}));
+		}
+		int counter = 0;
+		for (auto &action : actions) {
+			REQUIRE(action.get() == counter);
+			++counter;
+		}
+	}
 }
