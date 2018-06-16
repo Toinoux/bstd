@@ -97,10 +97,9 @@ TEST_CASE("ThreadPool") {
 				return (foo);
 			}));
 		}
-		int counter = 0;
 		for (auto &action : actions) {
-			REQUIRE(action.get() == counter);
-			++counter;
+			REQUIRE_NOTHROW(action.get());
 		}
+		REQUIRE(res == value);
 	}
 }

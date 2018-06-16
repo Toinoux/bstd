@@ -13,7 +13,7 @@
 
 namespace bstd {
 	template<typename T>
-	auto randomise(T start = std::numeric_limits<T>::lowest(), T end = std::numeric_limits<T>::max()) -> T {
+	T randomise(T start = std::numeric_limits<T>::lowest(), T end = std::numeric_limits<T>::max()) {
 		static_assert(std::is_arithmetic<T>::value, "Only arithmetic types can be randomised");
 		if constexpr (std::is_floating_point<T>::value) {
 			static std::random_device device;
