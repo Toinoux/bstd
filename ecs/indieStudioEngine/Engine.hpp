@@ -15,10 +15,10 @@
 #include <vector>
 #include <any>
 
-#include "infoMap.hpp"
-#include "keyEvent.hpp"
 #include "IComponent.hpp"
+#include "keyEvent.hpp"
 #include "ISystem.hpp"
+#include "infoMap.hpp"
 #include "Entity.hpp"
 
 namespace Engine {
@@ -104,13 +104,11 @@ namespace Engine {
 
 		template<typename T, typename ... Args>
 		void attachComponent(const Entity &entity, Args ... args) {
-			#include <iostream>
  			std::any_cast<Storage<T>&>(*this->getStorage<T>()).emplace(entity.getId(), T(args ...));
  		};
 
 		template<typename T>
 		void dettachComponent(size_t id) {
-			#include <iostream>
 			std::any_cast<Storage<T>&>(*this->getStorage<T>()).erase(id);
 		};
 
@@ -127,7 +125,6 @@ namespace Engine {
 			throw std::logic_error("No such system");
 		};
 
-		#include "keyEvent.hpp"
 		template <typename... Args>
 		void update(Utils::MultiEvent &event) noexcept
 		{
