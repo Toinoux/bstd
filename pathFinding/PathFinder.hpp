@@ -24,8 +24,8 @@ namespace bstd {
 			};
 
 		public:
+			virtual ~PathFinder();
 			PathFinder() = default;
-			~PathFinder() = default;
 			PathFinder(PathFinder &&) = default;
 			PathFinder(const PathFinder &) = default;
 			PathFinder &operator=(PathFinder &&) = default;
