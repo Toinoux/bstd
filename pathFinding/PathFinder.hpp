@@ -22,6 +22,7 @@ namespace bstd {
 				SOUTH_WEST,
 				SOUTH_EAST
 			};
+
 		public:
 			PathFinder() = default;
 			~PathFinder() = default;
@@ -31,7 +32,7 @@ namespace bstd {
 			PathFinder &operator=(const PathFinder &) = default;
 
 		public:
-			Cardinal getNextMove();
-			std::queue<Cardinal> getFullPath();
+			virtual Cardinal getNextMove() = 0;
+			virtual std::queue<Cardinal> getFullPath() = 0;
 	};
 }
