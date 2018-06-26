@@ -103,8 +103,3 @@ TEST_CASE("ThreadPool") {
 		REQUIRE(res == value);
 	}
 }
-
-#include "dynamicLoader.hpp"
-
-TEST_CASE("Dynamic Library Loading") {
-}
