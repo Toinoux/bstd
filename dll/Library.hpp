@@ -18,10 +18,11 @@ namespace bstd {
 
 	public:
 		template<typename T, typename ... Args>
-		T *(getInstance(const std::string &name)) {
+		T (*getInstance(const std::string &name))(Args ...) {
 			if (_symbols.find(name) == _symbols.end()) {
-				T *(*creator)();
 				void *symbol = loadSymbol(name.c_str());
+				if (nullptr == symbol)
+					return (nullptr);
 				_symbols[name] = symbol;
 			}
 			auto sym = reinterpret_cast<T(*)(Args...)>(_symbols[name]);
@@ -31,8 +32,8 @@ namespace bstd {
 		}
 
 		template<typename T, typename ... Args>
-		T execute(const std::string &name) {
-			return (this->getInstance<T>(name));
+		T execute(const std::string &name, Args && ... args) {
+			return (this->getInstance<T, Args ...>(std::forward<Args>(name)...));
 		}
 
 	public:
@@ -40,7 +41,7 @@ namespace bstd {
 
 
 	protected:
-		virtual void *loadSymbol(const std::string & name) = 0;
+		virtual void *loadSymbol(const std::string &name) = 0;
 		std::string name_;
 
 	private:

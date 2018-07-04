@@ -15,6 +15,7 @@
 namespace bstd {
 	class UnixLibrary : bstd::Library {
 	public:
+		UnixLibrary() = delete;
 		UnixLibrary(const std::string &libName) : Library(libName), _handle(dlopen(libName.c_str(), RTLD_LAZY)) {
 			if (nullptr == _handle) {
 				throw std::runtime_error(dlerror());
@@ -22,12 +23,12 @@ namespace bstd {
 		};
 
 		~UnixLibrary() {
-			if (nullptr == _handle)
+			if (nullptr != _handle)
 				dlclose(_handle);
 		}
 
 	public:
-		void *loadSymbol(const std::string &name) override {
+		void *loadSymbol(const std::string &name) noexcept override {
 			return (dlsym(this->_handle, name.c_str()));
 		}
 

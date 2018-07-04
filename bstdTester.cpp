@@ -103,3 +103,9 @@ TEST_CASE("ThreadPool") {
 		REQUIRE(res == value);
 	}
 }
+
+#include "dll/UnixLibrary.hpp"
+
+TEST_CASE("DynamicLoader") {
+	bstd::UnixLibrary linkedList("liblinked.so");
+}
