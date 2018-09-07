@@ -19,7 +19,7 @@ SRCS		=	bstdTester.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-NAME = tester
+NAME = tester.out
 
 ECHO = -@printf
 GREEN = "\x1b[32m"
