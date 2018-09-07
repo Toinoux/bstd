@@ -104,7 +104,7 @@ TEST_CASE("ThreadPool") {
 	}
 }
 
-#include "dll/UnixLibrary.hpp"
+#include "UnixLibrary.hpp"
 
 TEST_CASE("DynamicLoader") {
 	// bstd::UnixLibrary linkedList("dll/liblinked.so");
