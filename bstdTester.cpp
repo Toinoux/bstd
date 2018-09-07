@@ -60,7 +60,7 @@ TEST_CASE("ThreadPool") {
 
 	SECTION("Less than nbThread") {
 		std::vector<std::future<void>> actions;
-		int value = bstd::randomise<size_t>(1, nbThread);
+		size_t value = bstd::randomise<size_t>(1, nbThread);
 		for (size_t i = 0; i < value; ++i) {
 			actions.emplace_back(pool.addTask([&res] {
 				++res;
@@ -74,7 +74,7 @@ TEST_CASE("ThreadPool") {
 
 	SECTION("More than nbThread") {
 		std::vector<std::future<void>> actions;
-		int value = bstd::randomise<size_t>(nbThread, 200);
+		size_t value = bstd::randomise<size_t>(nbThread, 200);
 		for (size_t i = 0; i < value; ++i) {
 			actions.emplace_back(pool.addTask([&res] {
 				++res;
@@ -88,7 +88,7 @@ TEST_CASE("ThreadPool") {
 
 	SECTION("Non void future") {
 		std::vector<std::future<int>> actions;
-		int value = bstd::randomise<size_t>(1, 200);
+		size_t value = bstd::randomise<size_t>(1, 200);
 		for (size_t i = 0; i < value; ++i) {
 			actions.emplace_back(pool.addTask([&res] {
 				int foo;

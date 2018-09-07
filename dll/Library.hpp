@@ -32,7 +32,7 @@ namespace bstd {
 		}
 
 		template<typename T, typename ... Args>
-		T execute(const std::string &name, Args && ... args) {
+		T execute(const std::string &name, Args && ...) {
 			return (this->getInstance<T, Args ...>(std::forward<Args>(name)...));
 		}
 
