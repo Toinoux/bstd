@@ -10,8 +10,8 @@
 // #define CATCH_CONFIG_MAIN
 // #include "catch.hpp"
 #include "Engine.hpp"
-#include "Component.hpp"
-#include "System.hpp"
+#include "IComponent.hpp"
+#include "ISystem.hpp"
 
 struct testComponent : Engine::Component {
 	testComponent(int pX = 61, int pY = 61, int sX = 61, int sY = 61) :
@@ -28,13 +28,14 @@ public:
 	~testSystem() {};
 
 public:
-	void update() override {
+	void update(Engine::Event &) override {
 		for (auto &component : std::any_cast<Engine::Storage<testComponent>&>(*storage)) {
 			component.second.posX += component.second.speedX;
 			component.second.posY += component.second.speedY;
 		}
 		printStorage();
 	};
+
 	void setStorage(std::shared_ptr<std::any> &ptr) override {
 		storage = ptr;
 	};
@@ -53,6 +54,7 @@ public:
 int main() {
 	Engine::Engine tester;
 	Engine::Entity entityTest(tester.createEntity());
+	Engine::Event ev = 8;
 
 	tester.registerComponent<Engine::Component>();
 	auto storageTest = std::any_cast<Engine::Storage<Engine::Component>&>(*tester.getStorage<Engine::Component>());
@@ -67,15 +69,15 @@ int main() {
 	auto systemTest = tester.getSystem<testSystem>();
 
 	tester.setSystemStorage<testSystem, testComponent>();
-	std::any_cast<testSystem&>(*systemTest).update();
+	std::any_cast<testSystem&>(*systemTest).update(ev);
 
-	tester.update<testSystem, testSystem, testSystem>();
+	tester.update<testSystem, testSystem, testSystem>(ev);
 
 	for (size_t i = 0 ; i <  10 ; ++i) {
 		Engine::Entity entityTest(tester.createEntity());
 		std::cout << "Entity created with id: " << entityTest.getId() << std::endl;
 	}
 
-	tester.dettachComponent<Engine::Component>(entityTest);
-	tester.dettachComponent<testComponent>(entityTest);
+	tester.dettachComponent<Engine::Component>(entityTest.getId());
+	tester.dettachComponent<testComponent>(entityTest.getId());
 };

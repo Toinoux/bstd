@@ -9,12 +9,13 @@
 
 #include <memory>
 #include <any>
-#include "keyEvent.hpp"
 
 namespace Engine {
+	using Event = int;
+
 	class System {
 	public:
-		virtual void update(Utils::MultiEvent &event) = 0;
+		virtual void update(Event &event) = 0;
 		virtual void setStorage(std::shared_ptr<std::any> &ptr) = 0;
 	public:
 		virtual ~System() = default;
