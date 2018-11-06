@@ -104,6 +104,54 @@ TEST_CASE("ThreadPool") {
 	}
 }
 
+#include "indieStudioEngine/Engine.hpp"
+#include "indieStudioEngine/EngineTester.hpp"
+
+TEST_CASE ("ECS TEST") {
+	Engine::Engine tester;
+	Engine::Entity entityTest(tester.createEntity());
+	Engine::Event ev = 8;
+
+	tester.registerComponent<Engine::Component>();
+	auto storageTest = std::any_cast<Engine::Storage<Engine::Component>&>(*tester.getStorage<Engine::Component>());
+	REQUIRE(tester.components.size() == 1);
+
+	tester.registerComponent<testComponent>();
+	auto storageTest2 = std::any_cast<Engine::Storage<testComponent>&>(*tester.getStorage<testComponent>());
+	REQUIRE(tester.components.size() == 2);
+
+	tester.attachComponent<Engine::Component>(entityTest);
+	tester.attachComponent<testComponent>(entityTest);
+	REQUIRE(std::any_cast<Engine::Storage<Engine::Component>&>(*tester.getStorage<Engine::Component>()).size() == 1);
+	REQUIRE(std::any_cast<Engine::Storage<testComponent>&>(*tester.getStorage<testComponent>()).size() == 1);
+
+
+	tester.registerSystem<testSystem>();
+	auto systemTest = tester.getSystem<testSystem>();
+	REQUIRE(tester.systems.size() == 1);
+
+	tester.setSystemStorage<testSystem, testComponent>();
+	std::any_cast<testSystem&>(*systemTest).update(ev);
+	REQUIRE(std::any_cast<Engine::Storage<testComponent>&>(*tester.getStorage<testComponent>())[entityTest.getId()].posX == 122);
+	REQUIRE(std::any_cast<Engine::Storage<testComponent>&>(*tester.getStorage<testComponent>())[entityTest.getId()].posY == 122);
+
+	tester.update<testSystem, testSystem, testSystem>(ev);
+	REQUIRE(std::any_cast<Engine::Storage<testComponent>&>(*tester.getStorage<testComponent>())[entityTest.getId()].posX == 305);
+	REQUIRE(std::any_cast<Engine::Storage<testComponent>&>(*tester.getStorage<testComponent>())[entityTest.getId()].posY == 305);
+
+	for (size_t i = 0 ; i <  10 ; ++i) {
+		Engine::Entity entityTest2(tester.createEntity());
+		REQUIRE(entityTest2.getId() == (i + 2));
+		// std::cout << "Entity created with id: " << entityTest2.getId() << std::endl;
+	}
+
+	tester.dettachComponent<Engine::Component>(entityTest.getId());
+	tester.dettachComponent<testComponent>(entityTest.getId());
+	REQUIRE(std::any_cast<Engine::Storage<Engine::Component>&>(*tester.getStorage<Engine::Component>()).size() == 0);
+	REQUIRE(std::any_cast<Engine::Storage<testComponent>&>(*tester.getStorage<testComponent>()).size() == 0);
+};
+
+
 #include "UnixLibrary.hpp"
 
 TEST_CASE("DynamicLoader") {
