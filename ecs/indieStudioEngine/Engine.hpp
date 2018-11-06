@@ -16,14 +16,15 @@
 #include <any>
 
 #include "IComponent.hpp"
-#include "keyEvent.hpp"
 #include "ISystem.hpp"
-#include "infoMap.hpp"
 #include "Entity.hpp"
 
 namespace Engine {
 	template<typename T>
 	using Storage = std::unordered_map<size_t, T>;
+
+	using Event = int;
+	using Info = int;
 
 	template <typename... Args>
 	struct Updater;
@@ -31,13 +32,13 @@ namespace Engine {
 	template <typename First, typename... Args>
 	struct Updater<First, Args...>
 	{
-		static void name(std::vector<std::shared_ptr<std::any>> &systems, Utils::MultiEvent &event)
+		static void update(std::vector<std::shared_ptr<std::any>> &systems, Event &event)
 		{
 			static_assert(is_system<First>::value, "Only systems can be updated");
 			for (auto &sys : systems) {
 				if (std::type_index((*sys).type()) == std::type_index(typeid(First))) {
 					std::any_cast<First &>(*sys).update(event );
-					Updater<Args...>::name(systems, event);
+					Updater<Args...>::update(systems, event);
 					return;
 				}
 			}
@@ -47,7 +48,7 @@ namespace Engine {
 	template <>
 	struct Updater<>
 	{
-		static void name(std::vector<std::shared_ptr<std::any>> &, Utils::MultiEvent &)
+		static void update(std::vector<std::shared_ptr<std::any>> &, Event &)
 		{
 		}
 	};
@@ -76,7 +77,7 @@ namespace Engine {
 		template<typename T>
 		void registerSystem() {
 			static_assert(is_system<T>::value, "Only systems can be registered");
-			systems.push_back(std::make_shared<std::any>(std::any(T(this))));
+			systems.push_back(std::make_shared<std::any>(std::any(T())));
 		}
 
 	public:
@@ -126,19 +127,19 @@ namespace Engine {
 		};
 
 		template <typename... Args>
-		void update(Utils::MultiEvent &event) noexcept
+		void update(Event &event) noexcept
 		{
-			Updater<Args...>::name(systems, event);
+			Updater<Args...>::update(systems, event);
 		}
 
-		void setMap(std::vector<std::vector<Utils::Info>> &m) {
+		void setMap(std::vector<std::vector<Info>> &m) {
 			map = m;
 		};
 	public:
 		~Engine() = default;
 
 	public:
-		std::vector<std::vector<Utils::Info>> map;
+		std::vector<std::vector<Info>> map;
 		std::vector<std::shared_ptr<std::any>> components;
 		std::vector<std::shared_ptr<std::any>> systems;
 
