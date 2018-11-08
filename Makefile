@@ -13,7 +13,7 @@ CXXFLAGS	+=	-Wall -Wextra
 CXXFLAGS	+=	-std=c++17
 
 LDFLAGS		+=
-LDLIBS		+=	-ldl
+LDLIBS		+=	-ldl -lpthread
 
 SRCS		=	bstdTester.cpp
 

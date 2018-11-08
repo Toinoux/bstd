@@ -41,7 +41,7 @@ TEST_CASE("RandGen") {
 	REQUIRE(bstd::randomise<double>());
 }
 
-#include "ThreadPool.hpp"
+#include "threadPool.hpp"
 
 static const int nbThread = bstd::randomise<size_t>(1, 40);
 
