@@ -5,15 +5,14 @@
 ** UnixLibrary
 */
 
+#include "Library.hpp"
+
 #pragma once
 
 #include <dlfcn.h>
 
-#include "Library.hpp"
-
-
 namespace bstd {
-	class UnixLibrary : bstd::Library {
+	class UnixLibrary : public bstd::Library {
 	public:
 		UnixLibrary() = delete;
 		UnixLibrary(const std::string &libName) : Library(libName), _handle(dlopen(libName.c_str(), RTLD_LAZY)) {

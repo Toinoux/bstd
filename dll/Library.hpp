@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
+#include <dlfcn.h>
 
 namespace bstd {
 	class Library {
@@ -32,8 +33,8 @@ namespace bstd {
 		}
 
 		template<typename T, typename ... Args>
-		T execute(const std::string &name, Args && ...) {
-			return (this->getInstance<T, Args ...>(std::forward<Args>(name)...));
+		T execute(const std::string &name, Args && ...args) {
+			return (this->getInstance<T, Args ...>(name))(std::forward<Args>(args)...);
 		}
 
 	public:

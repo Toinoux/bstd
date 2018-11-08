@@ -151,9 +151,16 @@ TEST_CASE ("ECS TEST") {
 	REQUIRE(std::any_cast<Engine::Storage<testComponent>&>(*tester.getStorage<testComponent>()).size() == 0);
 };
 
-
 #include "UnixLibrary.hpp"
 
 TEST_CASE("DynamicLoader") {
-	// bstd::UnixLibrary linkedList("dll/liblinked.so");
+	bstd::UnixLibrary libTest("dll/lib/libtest.so");
+	int randomI = bstd::randomise<int>(1, 372684);
+	int res;
+
+	CHECK_NOTHROW(libTest.execute<void>("voidtest"));
+	CHECK_NOTHROW(res = libTest.execute<int>("return2"));
+	CHECK(2 == res);
+	CHECK_NOTHROW(res = libTest.execute<int>("returni", randomI));
+	CHECK(randomI);
 }
