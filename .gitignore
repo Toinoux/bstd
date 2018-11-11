@@ -13,7 +13,7 @@
 
 # Compiled Dynamic libraries
 *.so
-!liblinked.so
+!libtest.so
 *.dylib
 *.dll
 
