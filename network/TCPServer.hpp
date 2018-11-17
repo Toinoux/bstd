@@ -20,12 +20,9 @@
 #pragma once
 
 namespace bstd::network {
-	template <size_t CONNECTION_MAX>
-	class TCPServer {
+	class ATCPConnection : public Socket {
 	public:
-		TCPServer() : _socket(SOCK_STREAM), _port(_socket.bind()){
-			_socket.listen(CONNECTION_MAX);
-			std::cout << "Listening on port " << _port << ":" << std::endl;
+		ATCPConnection() : Socket(SOCK_STREAM) {
 		};
 
 	public:
@@ -33,12 +30,6 @@ namespace bstd::network {
 			if (::send(sock, buffer.data(), len, flags) < 0)
 				std::cerr << "Send() failed" << std::endl;
 		};
-
-		void sendAll(std::string_view buffer, size_t len, int flags = 0) const {
-			for (auto client : (*_clients)) {
-				this->send(client, buffer, len, flags);
-			}
-		}
 
 		const std::string revc(SOCKET sock, int flags = 0) const {
 			char buffer[READ_SIZE] = {0};
@@ -54,34 +45,35 @@ namespace bstd::network {
 			return str;
 		};
 
-		template <typename Functor>
-		void run(Functor &&f) {
-			f();
-		}
-
-	public:
-		PORT getPort() const {
-			return _port;
-		};
-
-		const Socket &getSocket() const {
-			return _socket;
-		}
-
-		SOCKET getSocketValue() const {
-			return _socket.getSocket();
-		}
-
-		const std::unique_ptr<std::array<SOCKET, CONNECTION_MAX>> &getClients() const {
-			return _clients;
-		}
-
-	private:
-		std::unique_ptr<std::array<SOCKET, CONNECTION_MAX>> _clients;
-		Socket _socket;
-		PORT _port;
+		virtual void run() = 0;
+		virtual ~ATCPConnection() {};
 
 	private:
 		static inline const int READ_SIZE = 4096;
+	};
+
+	class BasicEchoServer : public ATCPConnection {
+	public:
+		BasicEchoServer(size_t CONNECTION_MAX = 1, bool verbose = true) : ATCPConnection(), _port(bind()) {
+			listen(CONNECTION_MAX);
+			if(verbose)
+				std::cout << "Listening on port " << _port << ":" << std::endl;
+		};
+
+		void run() override {
+			std::string msg;
+
+			while (1) {
+				SOCKET csock;
+
+				csock = this->accept(_port);
+				msg = this->revc(csock, 0);
+				std::cout << msg << std::endl;
+			}
+		}
+
+		~BasicEchoServer() {};
+	private:
+		PORT _port;
 	};
 }
