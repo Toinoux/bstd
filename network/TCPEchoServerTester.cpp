@@ -6,10 +6,10 @@
 */
 
 #include <iostream>
-#include "TCPServer.hpp"
+#include "ATCPConnection.hpp"
 
 int main() {
-	bstd::network::BasicEchoServer server;
+	bstd::network::TCPBasicEchoServer server;
 
 	server.run();
 }

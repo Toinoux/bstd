@@ -41,6 +41,8 @@ namespace bstd::network {
 					std::cerr << "Recv() failed" << std::endl;
 				buffer[len] = 0;
 				str += buffer;
+				if (len < READ_SIZE - 1)
+					break;
 			}
 			return str;
 		};
@@ -52,9 +54,9 @@ namespace bstd::network {
 		static inline const int READ_SIZE = 4096;
 	};
 
-	class BasicEchoServer : public ATCPConnection {
+	class TCPBasicEchoServer : public ATCPConnection {
 	public:
-		BasicEchoServer(size_t CONNECTION_MAX = 1, bool verbose = true) : ATCPConnection(), _port(bind()) {
+		TCPBasicEchoServer(size_t CONNECTION_MAX = 1, bool verbose = true) : ATCPConnection(), _port(bind()) {
 			listen(CONNECTION_MAX);
 			if(verbose)
 				std::cout << "Listening on port " << _port << ":" << std::endl;
@@ -67,13 +69,38 @@ namespace bstd::network {
 				SOCKET csock;
 
 				csock = this->accept(_port);
-				msg = this->revc(csock, 0);
-				std::cout << msg << std::endl;
+				while(1) {
+					msg = this->revc(csock);
+					std::cout << msg << std::endl;
+					if (msg.size() == 0) {
+						std::cout << "LE CLIENT EST MORT :(" << std::endl << "BYE BYE" << std::endl;
+						break;
+					}
+				}
 			}
 		}
 
-		~BasicEchoServer() {};
+		~TCPBasicEchoServer() {};
 	private:
 		PORT _port;
+	};
+
+	class TCPBasicEchoClient : public ATCPConnection {
+	public:
+		TCPBasicEchoClient(PORT port, const std::string &host = DEFAULT_HOST) : ATCPConnection() {
+			connect(port, host);
+			std::cout << "Connected to " << host << ":" << port << std::endl;
+		};
+
+		void run() override {
+			std::string msg;
+
+			while (1) {
+				std::getline(std::cin, msg);
+				send(getSocket(), msg, msg.size());
+			}
+		}
+
+		~TCPBasicEchoClient() {};
 	};
 }
