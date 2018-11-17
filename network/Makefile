@@ -1,7 +1,17 @@
-all:	client server
+all:	tcp udp
 
-client:
-	g++ -std=c++17 -o client.out TCPEchoClientTester.cpp
+tcp: tcpclient tcpserver
 
-server:
-	g++ -std=c++17 -o server.out TCPEchoServerTester.cpp
+udp: udpclient udpserver
+
+tcpclient:
+	g++ -std=c++17 -o tcpclient.out TCPEchoClientTester.cpp
+
+tcpserver:
+	g++ -std=c++17 -o tcpserver.out TCPEchoServerTester.cpp
+
+udpclient:
+	g++ -std=c++17 -o udpclient.out UDPEchoClientTester.cpp
+
+udpserver:
+	g++ -std=c++17 -o udpserver.out UDPEchoServerTester.cpp
