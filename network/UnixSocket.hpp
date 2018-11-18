@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <netdb.h>
 
+#include <stdexcept>
 #include <string>
 #include "ISocket.hpp"
 
