@@ -20,6 +20,9 @@ namespace bstd::network {
 	class UDPSocket : public Socket {
 	public:
 		UDPSocket() : Socket(SOCK_DGRAM) {};
+		UDPSocket(PORT port) : Socket(SOCK_DGRAM), _port(bind()) {
+		};
+
 
 	public:
 		std::string recvfrom(SOCKET sock, SOCKADDR_IN *sin = NULL,int flags = 0) const{
@@ -53,8 +56,15 @@ namespace bstd::network {
 			if(::sendto(sock, buffer.data(), buffer.size(), flags, (SOCKADDR *)&sin, sizeof(sin)) < 0)
 				std::cerr << "Sendto() failed" << std::endl;
 		};
+	public:
+		PORT getPort() const {
+			return (_port);
+		};
 
 		virtual ~UDPSocket() {};
+
+	private:
+		PORT _port;
 
 	private:
 		static inline const int READ_SIZE = 4096;
@@ -62,8 +72,8 @@ namespace bstd::network {
 
 	class UDPBasicEchoServer : UDPSocket {
 	public:
-		UDPBasicEchoServer(PORT port = 5000) : UDPSocket(), _port(bind()) {
-			std::cout << "UDP Server listening on port " << _port << ":" << std::endl;
+		UDPBasicEchoServer(PORT port = 0) : UDPSocket(port) {
+			std::cout << "UDP Server listening on port " << getPort() << ":" << std::endl;
 		};
 
 		void run() {
@@ -78,8 +88,6 @@ namespace bstd::network {
 		};
 
 		~UDPBasicEchoServer() {};
-	public:
-		PORT _port;
 	};
 
 	class UDPBasicEchoClient : UDPSocket {
