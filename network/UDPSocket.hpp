@@ -95,7 +95,7 @@ namespace bstd::network {
 	class UDPBasicEchoClient : UDPSocket {
 	public:
 		UDPBasicEchoClient() : UDPSocket() {};
-		UDPBasicEchoClient(std::string_view dest, PORT port = 8080) : UDPSocket(), _dest(dest), _destPort(port) {
+		UDPBasicEchoClient(std::string_view dest, PORT port = 5000) : UDPSocket(), _dest(dest), _destPort(port) {
 		};
 
 		void run() {

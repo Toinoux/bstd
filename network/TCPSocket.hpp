@@ -23,7 +23,6 @@ namespace bstd::network {
 	class TCPSocket : public Socket {
 	public:
 		TCPSocket(size_t CONNECTION_MAX = 1, PORT port = 0) : Socket(SOCK_STREAM), _port(bind(port)) {
-			std::cout << port << std::endl;
 			listen(CONNECTION_MAX);
 		}
 

@@ -13,9 +13,7 @@ int main(int ac, const char *av[]) {
 		return (84);
 	}
 
-	bstd::network::UDPBasicEchoClient client;
+	bstd::network::UDPBasicEchoClient client(av[1], atoi(av[2]));
 
-	client.setDest(av[1]);
-	client.setDestPort(atoi(av[2]));
 	client.run();
 }
