@@ -20,9 +20,9 @@
 #pragma once
 
 namespace bstd::network {
-	class ATCPConnection : public Socket {
+	class TCPSocket : public Socket {
 	public:
-		ATCPConnection() : Socket(SOCK_STREAM) {
+		TCPSocket() : Socket(SOCK_STREAM) {
 		};
 
 	public:
@@ -46,23 +46,21 @@ namespace bstd::network {
 			}
 			return str;
 		};
-
-		virtual void run() = 0;
-		virtual ~ATCPConnection() {};
+		virtual ~TCPSocket() {};
 
 	private:
 		static inline const int READ_SIZE = 4096;
 	};
 
-	class TCPBasicEchoServer : public ATCPConnection {
+	class TCPBasicEchoServer : public TCPSocket {
 	public:
-		TCPBasicEchoServer(size_t CONNECTION_MAX = 1, bool verbose = true) : ATCPConnection(), _port(bind()) {
+		TCPBasicEchoServer(size_t CONNECTION_MAX = 1, bool verbose = true) : TCPSocket(), _port(bind()) {
 			listen(CONNECTION_MAX);
 			if(verbose)
 				std::cout << "Listening on port " << _port << ":" << std::endl;
 		};
 
-		void run() override {
+		void run() {
 			std::string msg;
 
 			while (1) {
@@ -85,14 +83,14 @@ namespace bstd::network {
 		PORT _port;
 	};
 
-	class TCPBasicEchoClient : public ATCPConnection {
+	class TCPBasicEchoClient : public TCPSocket {
 	public:
-		TCPBasicEchoClient(PORT port, const std::string &host = DEFAULT_HOST) : ATCPConnection() {
+		TCPBasicEchoClient(PORT port, const std::string &host = DEFAULT_HOST) : TCPSocket() {
 			connect(port, host);
 			std::cout << "Connected to " << host << ":" << port << std::endl;
 		};
 
-		void run() override {
+		void run() {
 			std::string msg;
 
 			while (1) {

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2018
 ** tech3
 ** File description:
-** AUDPConnection
+** UDPSocket
 */
 
 #ifdef _WIN32
@@ -17,9 +17,9 @@
 #pragma once
 
 namespace bstd::network {
-	class AUDPConnection : public Socket {
+	class UDPSocket : public Socket {
 	public:
-		AUDPConnection() : Socket(SOCK_DGRAM) {};
+		UDPSocket() : Socket(SOCK_DGRAM) {};
 
 	public:
 		std::string recvfrom(SOCKET sock, SOCKADDR_IN *sin = NULL,int flags = 0) const{
@@ -54,20 +54,19 @@ namespace bstd::network {
 				std::cerr << "Sendto() failed" << std::endl;
 		};
 
-		virtual void run() = 0;
-		virtual ~AUDPConnection() {};
+		virtual ~UDPSocket() {};
 
 	private:
 		static inline const int READ_SIZE = 4096;
 	};
 
-	class UDPBasicEchoServer : AUDPConnection {
+	class UDPBasicEchoServer : UDPSocket {
 	public:
-		UDPBasicEchoServer(PORT port = 5000) : AUDPConnection(), _port(bind()) {
+		UDPBasicEchoServer(PORT port = 5000) : UDPSocket(), _port(bind()) {
 			std::cout << "UDP Server listening on port " << _port << ":" << std::endl;
 		};
 
-		void run() override {
+		void run() {
 			std::string msg;
 			SOCKADDR_IN sin = {0};
 
@@ -83,11 +82,11 @@ namespace bstd::network {
 		PORT _port;
 	};
 
-	class UDPBasicEchoClient : AUDPConnection {
+	class UDPBasicEchoClient : UDPSocket {
 	public:
-		UDPBasicEchoClient() : AUDPConnection() {};
+		UDPBasicEchoClient() : UDPSocket() {};
 
-		void run() override {
+		void run() {
 			std::string msg;
 
 			while (1) {

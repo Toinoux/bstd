@@ -5,7 +5,7 @@
 ** UDPEchoClientTester
 */
 
-#include "AUDPConnection.hpp"
+#include "UDPSocket.hpp"
 
 int main(int ac, const char *av[]) {
 	if (ac != 3) {

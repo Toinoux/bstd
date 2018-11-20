@@ -5,7 +5,7 @@
 ** UDPEchoServerTester
 */
 
-#include "AUDPConnection.hpp"
+#include "UDPSocket.hpp"
 
 int main() {
 	bstd::network::UDPBasicEchoServer server;

@@ -6,7 +6,7 @@
 */
 
 #include <iostream>
-#include "ATCPConnection.hpp"
+#include "TCPSocket.hpp"
 
 int main(int ac, const char *av[]) {
 	if (ac != 2) {
