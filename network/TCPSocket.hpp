@@ -39,7 +39,7 @@ namespace bstd::network {
 				std::cerr << "Send() failed" << std::endl;
 		};
 
-		const std::string revc(SOCKET sock, int flags = 0) const {
+		const std::string recv(SOCKET sock, int flags = 0) const {
 			char buffer[READ_SIZE] = {0};
 			std::string str;
 			int len;
@@ -83,7 +83,7 @@ namespace bstd::network {
 
 				csock = this->accept(getPort());
 				while(1) {
-					msg = this->revc(csock);
+					msg = this->recv(csock);
 					std::cout << msg << std::endl;
 					if (msg.size() == 0) {
 						std::cout << "LE CLIENT EST MORT :(" << std::endl << "BYE BYE" << std::endl;
