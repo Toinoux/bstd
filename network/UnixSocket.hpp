@@ -31,13 +31,13 @@ namespace bstd::network {
 	        throw std::runtime_error("creatSocket failed");
         };
 
-        PORT bind() const {
+        PORT bind(PORT port = 0) const {
             SOCKADDR_IN sin = {0};
             socklen_t len = sizeof(sin);
 
             sin.sin_addr.s_addr = htonl(INADDR_ANY);
             sin.sin_family = AF_INET;
-	        sin.sin_port = 0;
+	        sin.sin_port = htons(port);
 
             if (::bind(_socket, (sockaddr *)&sin, sizeof(sin)) == -1)
 	            throw std::runtime_error("bind failed");

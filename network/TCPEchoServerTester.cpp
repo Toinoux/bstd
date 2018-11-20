@@ -9,7 +9,7 @@
 #include "TCPSocket.hpp"
 
 int main() {
-	bstd::network::TCPBasicEchoServer server;
+	bstd::network::TCPBasicEchoServer server(1, 5000);
 
 	server.run();
 }

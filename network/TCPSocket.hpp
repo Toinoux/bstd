@@ -22,7 +22,8 @@
 namespace bstd::network {
 	class TCPSocket : public Socket {
 	public:
-		TCPSocket(size_t CONNECTION_MAX = 1) : Socket(SOCK_STREAM), _port(bind()) {
+		TCPSocket(size_t CONNECTION_MAX = 1, PORT port = 0) : Socket(SOCK_STREAM), _port(bind(port)) {
+			std::cout << port << std::endl;
 			listen(CONNECTION_MAX);
 		}
 
@@ -70,7 +71,7 @@ namespace bstd::network {
 
 	class TCPBasicEchoServer : public TCPSocket {
 	public:
-		TCPBasicEchoServer(size_t CONNECTION_MAX = 1, bool verbose = true) : TCPSocket(CONNECTION_MAX) {
+		TCPBasicEchoServer(size_t CONNECTION_MAX = 1, PORT port = 0, bool verbose = true) : TCPSocket(CONNECTION_MAX, port) {
 			if(verbose)
 				std::cout << "Listening on port " << getPort() << ":" << std::endl;
 		};

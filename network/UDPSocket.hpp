@@ -19,8 +19,10 @@
 namespace bstd::network {
 	class UDPSocket : public Socket {
 	public:
-		UDPSocket() : Socket(SOCK_DGRAM) {};
-		UDPSocket(PORT port) : Socket(SOCK_DGRAM), _port(bind()) {
+		UDPSocket() : Socket(SOCK_DGRAM) {
+		};
+
+		UDPSocket(PORT port) : Socket(SOCK_DGRAM), _port(bind(port)) {
 		};
 
 
@@ -93,6 +95,8 @@ namespace bstd::network {
 	class UDPBasicEchoClient : UDPSocket {
 	public:
 		UDPBasicEchoClient() : UDPSocket() {};
+		UDPBasicEchoClient(std::string_view dest, PORT port = 8080) : UDPSocket(), _dest(dest), _destPort(port) {
+		};
 
 		void run() {
 			std::string msg;

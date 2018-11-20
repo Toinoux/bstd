@@ -8,7 +8,7 @@
 #include "UDPSocket.hpp"
 
 int main() {
-	bstd::network::UDPBasicEchoServer server;
+	bstd::network::UDPBasicEchoServer server(5000);
 
 	server.run();
 }
