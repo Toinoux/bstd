@@ -15,7 +15,7 @@ namespace bstd {
 	public:
 		Stoppable() : _future(_exitSignal.get_future()) {};
 
-		virtual void run() = 0;
+		virtual void run() {};
 
 		void operator()() {
 			run();
