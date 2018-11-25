@@ -10,6 +10,8 @@
 #include <memory>
 #include <any>
 
+#include "Utils.hpp"
+
 namespace Engine {
 	using Event = rtype::server::Utils::KeyEvent;
 
