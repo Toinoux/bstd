@@ -134,7 +134,7 @@ namespace Engine {
 		};
 
 		template <typename... Args>
-		void update(Event &event) noexcept
+		void update(Event event) noexcept
 		{
 			Updater<Args...>::update(systems, event);
 		}
