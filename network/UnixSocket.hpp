@@ -31,7 +31,8 @@ namespace bstd::network {
         Socket(int theType, int protocol = 0) : _socket(socket(AF_INET, theType, protocol)) {
             if (_socket == -1)
 	            throw std::runtime_error("creatSocket failed");
-            if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &(int){ 1 }, sizeof(int)) < 0)
+            int i = 1;
+            if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &i , sizeof(int)) < 0)
                 throw std::runtime_error("setsocket opt failed (FUCK LE KERNEL)");
         };
 
