@@ -19,6 +19,7 @@
 #include "ISystem.hpp"
 #include "Entity.hpp"
 #include "Utils.hpp"
+#include "Room.hpp"
 
 namespace Engine {
 	template<typename T>
@@ -82,9 +83,9 @@ namespace Engine {
 		}
 
 		template<typename T>
-		void registerSystemWithCoreRef() {
+		void registerSystemWithCoreRef(rtype::server::Room<4>::RoomServer<4> &roomserv) {
 			static_assert(is_system<T>::value, "Only systems can be registered");
-			systems.push_back(std::make_shared<std::any>(std::any(T(this))));
+			systems.push_back(std::make_shared<std::any>(std::any(T(this, roomserv))));
 		}
 
 	public:
