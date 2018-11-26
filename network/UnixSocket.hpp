@@ -18,6 +18,8 @@ using SOCKADDR = struct sockaddr;
 using IN_ADDR = struct in_addr;
 using SOCKET = int;
 
+#define closeSocket(s) ::close(s)
+
 namespace bstd::network {
     static const char *DEFAULT_HOST = "localhost";
 
@@ -27,8 +29,10 @@ namespace bstd::network {
     public:
         Socket() = delete;
         Socket(int theType, int protocol = 0) : _socket(socket(AF_INET, theType, protocol)) {
-                if (_socket == -1)
-	        throw std::runtime_error("creatSocket failed");
+            if (_socket == -1)
+	            throw std::runtime_error("creatSocket failed");
+            if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &(int){ 1 }, sizeof(int)) < 0)
+                throw std::runtime_error("setsocket opt failed (FUCK LE KERNEL)");
         };
 
         PORT bind(PORT port = 0) const {
@@ -77,7 +81,9 @@ namespace bstd::network {
 	            throw std::runtime_error("connect failed");
         };
 
-        void close() const {};
+        void close() const {
+            closeSocket(_socket);
+        };
 
     public:
         SOCKET getSocket() const {
@@ -88,6 +94,8 @@ namespace bstd::network {
         SOCKET _socket;
 
     public:
-       ~Socket() {};
+       ~Socket() {
+           closeSocket(_socket);
+       };
     };
 }
