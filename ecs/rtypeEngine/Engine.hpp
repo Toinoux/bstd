@@ -39,7 +39,12 @@ namespace Engine {
 			for (auto &sys : systems) {
 				if (std::type_index((*sys).type()) == std::type_index(typeid(First))) {
 					std::vector<std::string> upd = std::any_cast<First &>(*sys).update(event );
+					std::cout << "coucou --" << std::endl;	
+					for (auto &s : upd) {
+						std::cout << s << std::endl;
+					}
 					Updater<Args...>::update(systems, event);
+					std::cout << "coucou" << std::endl;
 					
 					return upd;
 				}
@@ -137,7 +142,7 @@ namespace Engine {
 		template <typename... Args>
 		std::vector<std::string> update(Event event) noexcept
 		{
-			Updater<Args...>::update(systems, event);
+			return Updater<Args...>::update(systems, event);
 		}
 
 		void setMap(std::vector<std::vector<Info>> &m) {
