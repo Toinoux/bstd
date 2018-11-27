@@ -38,15 +38,8 @@ namespace Engine {
 			static_assert(is_system<First>::value, "Only systems can be updated");
 			for (auto &sys : systems) {
 				if (std::type_index((*sys).type()) == std::type_index(typeid(First))) {
-					std::vector<std::string> upd = std::any_cast<First &>(*sys).update(event );
-					std::cout << "coucou --" << std::endl;	
-					for (auto &s : upd) {
-						std::cout << s << std::endl;
-					}
 					Updater<Args...>::update(systems, event);
-					std::cout << "coucou" << std::endl;
-					
-					return upd;
+					return (std::any_cast<First &>(*sys).update(event ));
 				}
 			}
 		}
@@ -57,6 +50,7 @@ namespace Engine {
 	{
 		static std::vector<std::string> update(std::vector<std::shared_ptr<std::any>> &, Event &)
 		{
+			return {};
 		}
 	};
 
