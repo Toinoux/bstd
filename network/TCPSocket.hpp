@@ -28,7 +28,7 @@ namespace bstd::network {
 
 		TCPSocket(PORT port, const std::string &host = DEFAULT_HOST) : Socket(SOCK_STREAM) {
 			if (port != 0) {
-				_destSock = connect(port, host);
+				connect(port, host);
 				std::cout << "Connected to " << host << ":" << port << std::endl;
 			}
 		}
@@ -59,15 +59,10 @@ namespace bstd::network {
 			return (_port);
 		}
 
-		SOCKET getDestSock() const {
-			return _destSock;
-		}
-
 		virtual ~TCPSocket() {};
 
 	private:
 		PORT _port;
-		SOCKET _destSock;
 
 	private:
 		static inline const int READ_SIZE = 4096;
