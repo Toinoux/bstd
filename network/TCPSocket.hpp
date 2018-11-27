@@ -59,10 +59,15 @@ namespace bstd::network {
 			return (_port);
 		}
 
+		SOCKET getDestSock() const {
+			return _destSock;
+		}
+
 		virtual ~TCPSocket() {};
 
 	private:
 		PORT _port;
+		SOCKET _destSock;
 
 	private:
 		static inline const int READ_SIZE = 4096;
