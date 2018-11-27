@@ -33,14 +33,13 @@ namespace Engine {
 	template <typename First, typename... Args>
 	struct Updater<First, Args...>
 	{
-		static void update(std::vector<std::shared_ptr<std::any>> &systems, Event &event)
+		static std::vector<std::string> update(std::vector<std::shared_ptr<std::any>> &systems, Event &event)
 		{
 			static_assert(is_system<First>::value, "Only systems can be updated");
 			for (auto &sys : systems) {
 				if (std::type_index((*sys).type()) == std::type_index(typeid(First))) {
-					std::any_cast<First &>(*sys).update(event );
 					Updater<Args...>::update(systems, event);
-					return;
+					return (std::any_cast<First &>(*sys).update(event ));
 				}
 			}
 		}
@@ -49,8 +48,9 @@ namespace Engine {
 	template <>
 	struct Updater<>
 	{
-		static void update(std::vector<std::shared_ptr<std::any>> &, Event &)
+		static std::vector<std::string> update(std::vector<std::shared_ptr<std::any>> &, Event &)
 		{
+			return {};
 		}
 	};
 
@@ -134,9 +134,9 @@ namespace Engine {
 		};
 
 		template <typename... Args>
-		void update(Event event) noexcept
+		std::vector<std::string> update(Event event) noexcept
 		{
-			Updater<Args...>::update(systems, event);
+			return Updater<Args...>::update(systems, event);
 		}
 
 		void setMap(std::vector<std::vector<Info>> &m) {
