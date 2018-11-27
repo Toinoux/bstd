@@ -19,7 +19,6 @@
 #include "ISystem.hpp"
 #include "Entity.hpp"
 #include "Utils.hpp"
-#include "Room.hpp"
 
 namespace Engine {
 	template<typename T>
@@ -34,7 +33,7 @@ namespace Engine {
 	template <typename First, typename... Args>
 	struct Updater<First, Args...>
 	{
-		static void update(std::vector<std::shared_ptr<std::any>> &systems, Event &event)
+		static std::vector<std::string> update(std::vector<std::shared_ptr<std::any>> &systems, Event &event)
 		{
 			static_assert(is_system<First>::value, "Only systems can be updated");
 			for (auto &sys : systems) {
@@ -50,7 +49,7 @@ namespace Engine {
 	template <>
 	struct Updater<>
 	{
-		static void update(std::vector<std::shared_ptr<std::any>> &, Event &)
+		static std::vector<std::string> update(std::vector<std::shared_ptr<std::any>> &, Event &)
 		{
 		}
 	};
@@ -83,9 +82,9 @@ namespace Engine {
 		}
 
 		template<typename T>
-		void registerSystemWithCoreRef(rtype::server::Room<4>::RoomServer<4> &roomserv) {
+		void registerSystemWithCoreRef() {
 			static_assert(is_system<T>::value, "Only systems can be registered");
-			systems.push_back(std::make_shared<std::any>(std::any(T(this, roomserv))));
+			systems.push_back(std::make_shared<std::any>(std::any(T(this))));
 		}
 
 	public:
@@ -135,7 +134,7 @@ namespace Engine {
 		};
 
 		template <typename... Args>
-		void update(Event event) noexcept
+		std::vector<std::string> update(Event event) noexcept
 		{
 			Updater<Args...>::update(systems, event);
 		}
