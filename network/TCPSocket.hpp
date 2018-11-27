@@ -28,7 +28,7 @@ namespace bstd::network {
 
 		TCPSocket(PORT port, const std::string &host = DEFAULT_HOST) : Socket(SOCK_STREAM) {
 			if (port != 0) {
-				connect(port, host);
+				_destSock = connect(port, host);
 				std::cout << "Connected to " << host << ":" << port << std::endl;
 			}
 		}

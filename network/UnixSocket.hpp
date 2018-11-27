@@ -67,9 +67,10 @@ namespace bstd::network {
 	        return client;
         };
 
-        void connect(PORT port, std::string const &host = DEFAULT_HOST) const {
+        SOCKET connect(PORT port, std::string const &host = DEFAULT_HOST) const {
             struct hostent *hostinfo;
             SOCKADDR_IN sin = {0};
+            SOCKET sock;
 
             hostinfo = gethostbyname(host.c_str());
             if (hostinfo == NULL) {
@@ -78,8 +79,9 @@ namespace bstd::network {
             sin.sin_addr = *(IN_ADDR *) hostinfo->h_addr;
 	        sin.sin_port = htons(port);
 	        sin.sin_family = AF_INET;
-	        if(::connect(_socket, (sockaddr *)&sin, sizeof(sin)) == -1)
+	        if((sock = ::connect(_socket, (sockaddr *)&sin, sizeof(sin))) == -1)
 	            throw std::runtime_error("connect failed");
+            return (sock);
         };
 
         void close() const {
