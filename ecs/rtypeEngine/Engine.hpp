@@ -42,6 +42,7 @@ namespace Engine {
 					return (std::any_cast<First &>(*sys).update(event ));
 				}
 			}
+			return {};
 		}
 	};
 
