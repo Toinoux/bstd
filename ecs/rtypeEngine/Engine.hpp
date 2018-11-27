@@ -39,10 +39,8 @@ namespace Engine {
 			for (auto &sys : systems) {
 				if (std::type_index((*sys).type()) == std::type_index(typeid(First))) {
 					std::vector<std::string> upd = std::any_cast<First &>(*sys).update(event );
-					std::vector<std::string> nextUpd = Updater<Args...>::update(systems, event);
-					for (auto &s : nextUpd) {
-						upd.push_back(s);
-					}
+					Updater<Args...>::update(systems, event);
+					
 					return upd;
 				}
 			}
