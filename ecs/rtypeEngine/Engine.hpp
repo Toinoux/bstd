@@ -38,9 +38,12 @@ namespace Engine {
 			static_assert(is_system<First>::value, "Only systems can be updated");
 			for (auto &sys : systems) {
 				if (std::type_index((*sys).type()) == std::type_index(typeid(First))) {
-					std::any_cast<First &>(*sys).update(event );
-					Updater<Args...>::update(systems, event);
-					return;
+					std::vector<std::string> upd = std::any_cast<First &>(*sys).update(event );
+					std::vector<std::string> nextUpd = Updater<Args...>::update(systems, event);
+					for (auto &s : nextUpd) {
+						upd.push_back(s);
+					}
+					return upd;
 				}
 			}
 		}
