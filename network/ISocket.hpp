@@ -1,5 +1,9 @@
 #include <string>
 
+#ifdef _WIN32
+    #include <winsock2.h>
+#endif 
+
 #pragma once
 
 namespace bstd {

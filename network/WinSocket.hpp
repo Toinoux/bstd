@@ -2,7 +2,10 @@
 #include <ws2tcpip.h>
 #include "ISocket.hpp"
 
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+
 #pragma once
+#pragma comment(lib, "ws2_32.lib")
 
 namespace bstd::network {
 	static const char *DEFAULT_HOST = "localhost";

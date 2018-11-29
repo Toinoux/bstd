@@ -7,6 +7,7 @@
 
 #ifdef _WIN32
 	#include "WinSocket.hpp"
+	#define _WINSOCK_DEPRECATED_NO_WARNINGS	
 #else
 	#include "UnixSocket.hpp"
 #endif
