@@ -11,6 +11,7 @@
 	#include "UnixSocket.hpp"
 #endif
 
+#include <string_view>
 #include <iostream>
 #include <string>
 
@@ -28,7 +29,7 @@ namespace bstd::network {
 
 	public:
 		std::string recvfrom(SOCKET sock, SOCKADDR_IN *sin = NULL,int flags = 0) const{
-			uint32_t sinsize = sizeof(*sin);
+			int sinsize = sizeof(*sin);
 			char buffer[READ_SIZE];
 			std::string msg;
 			int len;
