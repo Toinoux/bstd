@@ -30,7 +30,7 @@ namespace bstd::network {
 
 	public:
 		std::string recvfrom(SOCKET sock, SOCKADDR_IN *sin = NULL,int flags = 0) const{
-			int sinsize = sizeof(*sin);
+			socklen_t sinsize = sizeof(*sin);
 			char buffer[READ_SIZE];
 			std::string msg;
 			int len;
