@@ -7,10 +7,12 @@
 
 #ifdef _WIN32
 	#include "WinSocket.hpp"
+	#define _WINSOCK_DEPRECATED_NO_WARNINGS	
 #else
 	#include "UnixSocket.hpp"
 #endif
 
+#include <string_view>
 #include <iostream>
 #include <string>
 
@@ -28,7 +30,7 @@ namespace bstd::network {
 
 	public:
 		std::string recvfrom(SOCKET sock, SOCKADDR_IN *sin = NULL,int flags = 0) const{
-			uint32_t sinsize = sizeof(*sin);
+			socklen_t sinsize = sizeof(*sin);
 			char buffer[READ_SIZE];
 			std::string msg;
 			int len;
