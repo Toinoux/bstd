@@ -24,7 +24,7 @@ namespace Engine {
 	template<typename T>
 	using Storage = std::unordered_map<size_t, T>;
 
-	using Event = rtype::server::Utils::KeyEvent;
+	using Event = std::vector<std::string>;
 	using Info = int;
 
 	template <typename... Args>
